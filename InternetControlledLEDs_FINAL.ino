@@ -15,9 +15,10 @@ int sensor = 0;
 int Dim = 0;
 int Dim1 = 0;
 int brightness = 150;
+int i =0;
 
-byte mac[] = { 0xAB, 0xCD, 0xEF, 0x01, 0x23, 0x45 };  //Replace MAC Address with Devices own MAC Address
-IPAddress ip(192, 168, X, X);  // Choose your IP Adress that you would like to use
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC6, 0xDA };  //Replace MAC Address with Devices own MAC Address
+IPAddress ip(192, 168, 0, 101);  // IP Adress that was assigned to my arduino.
 
 
 // (port 80 is default for HTTP):
@@ -76,13 +77,13 @@ void loop() {
            
            client.println("</HEAD><BODY>");
            client.println("<center><H1>LUMANARY LIGHTS</H1>");
-           client.println("<hr />");
+          // client.println("<hr />");
            client.println("<br />");  
-           client.println("<H2>Select The type of light show</H2>");
+           client.println("<H2>Light Type</H2>");
            client.println("<br /><H2>");  
            client.println("<a href=\"/White_ON\"\">ON</a>");
            client.println("<a href=\"/Run_OFF\"\">OFF</a><br />");   
-           client.println("  Brightness: ");
+        // client.println("  Brightness: ");
            client.println("<a href=\"/BRIGHTNESS_HIGH\"\">HIGH</a>");
            client.println("<a href=\"/BRIGHTNESS_MEDIUM\"\">MEDIUM</a>");  
            client.println("<a href=\"/BRIGHTNESS_LOW\"\">LOW</a>");
@@ -97,11 +98,13 @@ void loop() {
            client.println("<br />"); 
            client.println("<a href=\"/buttonBLUE_ON\"\">Blue ON</a>");
            client.println("<a href=\"/buttonBLUE_OFF\"\">Blue OFF</a><br />"); 
-           client.println("</H2><H3><br>Automatic</H3>");
-           client.println("<br />");
-           client.println("<a href=\"/Run_ON\"\">ON</a>");
-           client.println("<a href=\"/Run_OFF\"\">OFF</a><br />"); 
-           client.println("<br />");
+           client.println("</H2><H3><br>Moods</H3>");
+           client.println("<br /><H4>");
+           client.println("<a href=\"/FUNKY\"\">Funky</a>");
+           client.println("<a href=\"/UW\"\">Under Water</a><br />"); 
+        // client.println("<a href=\"/RAVE\"\">Rave</a><br />"); 
+           client.println("<a href=\"/TV\"\">Watching TV</a>"); 
+           client.println("<a href=\"/RELAX\"\">Relax</a></H4>"); 
            client.println("</center></BODY>");
            client.println("</HTML>");
      
@@ -122,7 +125,7 @@ void loop() {
              else if(readString.indexOf("AUTOMATIC")>0)
              {
                 sensor = analogRead(Value);
-                Dim1 = map(sensor,940,1000,1,254);
+                Dim1 = map(sensor,960,1023,1,254);
                 Dim1 = abs(Dim1);
                 Serial.println(Dim1);
                 Serial.println(sensor); // Debug
@@ -171,63 +174,123 @@ void loop() {
              analogWrite(BLUEPIN,0);     //Blue LED is OFF
              }
 
-          if(readString.indexOf("Run_ON") > 0)  // Goes though colors
+          if(readString.indexOf("FUNKY") > 0)  // Goes though colors
           {
 
-            for(int i = 0; i <151; i++)
+            for( i = 0; i <151; i++)
             {
               analogWrite(REDPIN, i);  // turns RED
               analogWrite(GREENPIN, 0);
               analogWrite(BLUEPIN, 0);
               delay(25);
             }
-             for(int i = 0; i <151; i++)
+             for(i = 0; i <151; i++)
             {
               analogWrite(REDPIN, 150-i);  
               analogWrite(GREENPIN, i);   //RED to Green
               analogWrite(BLUEPIN, 0);
               delay(25);
             }
-             for(int i = 0; i <151; i++)
+             for( i = 0; i <151; i++)
             {
               analogWrite(REDPIN, 0);
               analogWrite(GREENPIN, 150-i);
               analogWrite(BLUEPIN, i);    // Green to Blue
               delay(25);
             }
-             for(int i = 0; i <151; i++)
+             for( i = 0; i <151; i++)
             {
-              analogWrite(REDPIN, 0);
+              analogWrite(REDPIN, i);
               analogWrite(GREENPIN,0);
               analogWrite(BLUEPIN, 150-i);
               delay(25);
             }
-              delay(100);
-              for(int i = 0; i <10; i++)
+            for( i = 0; i <151; i++)
             {
-              analogWrite(REDPIN, 150); 
-              analogWrite(GREENPIN, 0);
+              analogWrite(REDPIN, 150-i);
+              analogWrite(GREENPIN,0);
               analogWrite(BLUEPIN, 0);
-              delay(100);
-              analogWrite(REDPIN, 0);
-              analogWrite(GREENPIN, 150);
-              analogWrite(BLUEPIN, 0);
-              delay(100);
-              analogWrite(REDPIN, 0);
-              analogWrite(GREENPIN, 0);
-              analogWrite(BLUEPIN, 150);
-              delay(100);
-              
+              delay(25);
             }
-           
+             
+//              for(int i = 0; i <10; i++)
+//            {
+//              analogWrite(REDPIN, 150); 
+//              analogWrite(GREENPIN, 0);
+//              analogWrite(BLUEPIN, 0);
+//              delay(100);
+//              analogWrite(REDPIN, 0);
+//              analogWrite(GREENPIN, 150);
+//              analogWrite(BLUEPIN, 0);
+//              delay(100);
+//              analogWrite(REDPIN, 0);
+//              analogWrite(GREENPIN, 0);
+//              analogWrite(BLUEPIN, 150);
+//              delay(100);
+//              
+//            }
+          }
+          else if(readString.indexOf("UW")>0) // Turns off all LEDS
+          {
+            analogWrite(REDPIN,20);
+            analogWrite(GREENPIN,120);
+            analogWrite(BLUEPIN,200);
+            }
+
+//           else if(readString.indexOf("RAVE")>0)
+//          {
+//            for(i =0; i <=6; i++)
+//            {
+//            analogWrite(REDPIN,150);
+//            analogWrite(GREENPIN,150);
+//            analogWrite(BLUEPIN,150);
+//            delay(60);
+//            analogWrite(REDPIN,0);
+//            analogWrite(GREENPIN,0);
+//            analogWrite(BLUEPIN,0);
+//            delay(60);
+//
+//            
+//            }
+//            }
+         else if(readString.indexOf("TV")>0)
+          {
+            analogWrite(REDPIN,5);
+            analogWrite(GREENPIN,1);
+            analogWrite(BLUEPIN,20);
+            }
+
+        else if(readString.indexOf("RELAX")>0)
+          {
+            for(i = 0; i <3;i++)
+              {
+              for(int j = 0; j < 50; j++)
+                  {
+            analogWrite(REDPIN,5 + j);
+            analogWrite(GREENPIN,20 + j);
+            analogWrite(BLUEPIN,30 + j);
+            delay(50);
+                   }
+              
+            for(int d = 50; d >0;d--)
+                       {
+            analogWrite(REDPIN,5+d);
+            analogWrite(GREENPIN,20+d);
+            analogWrite(BLUEPIN,30+d);
+            delay(50);
+                       }
+            delay(200);
+              }
+          }
       
-          } // end while
+           // end while
           else if(readString.indexOf("Run_OFF")>0) // Turns off all LEDS
           {
             analogWrite(REDPIN,0);
             analogWrite(GREENPIN,0);
             analogWrite(BLUEPIN,0);
             }
+            
             //clearing string for next read
             readString="";  
           
