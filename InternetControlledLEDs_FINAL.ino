@@ -17,8 +17,8 @@ int Dim1 = 0;
 int brightness = 150;
 int i =0;
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x0E, 0xC6, 0xDA };  //Replace MAC Address with Devices own MAC Address
-IPAddress ip(192, 168, 0, 101);  // IP Adress that was assigned to my arduino.
+byte mac[] = { 0xAB, 0xCD, 0xEF, 0x01, 0x23, 0x45 };  //Replace MAC Address with Devices own MAC Address
+IPAddress ip(192, 168, X,X);  // IP Adress that was assigned to my arduino.
 
 
 // (port 80 is default for HTTP):
